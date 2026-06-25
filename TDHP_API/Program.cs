@@ -64,7 +64,7 @@ namespace TDHP_API
                     }
                     else
                     {
-                        policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://thdp.smarthomeroshkajr.cc")
+                        policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://thdp.smarthomeroshkajr.cc", "https://mach-thdp-production.up.railway.app")
                               .AllowAnyHeader()
                               .AllowAnyMethod();
                     }

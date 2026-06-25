@@ -26,5 +26,5 @@ RUN dotnet publish "./TDHP_API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish --chown=$APP_UID /app/publish .
 ENTRYPOINT ["dotnet", "TDHP_API.dll"]

@@ -26,6 +26,9 @@ namespace TDHP_API.TDHPDbContext.Models
         public string ButtonText { get; set; } = string.Empty;
 
         [Required]
+        public string VideoLink { get; set; } = string.Empty;
+
+        [Required]
         public DateTime DateOfCreate { get; set; } = DateTime.UtcNow;
 
         [Required]

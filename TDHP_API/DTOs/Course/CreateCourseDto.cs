@@ -9,6 +9,7 @@ namespace TDHP_API.DTOs.Course
         [Required] public string DetailImage { get; set; } = string.Empty;
         [Required] public string Description { get; set; } = string.Empty;
         [Required] public string ButtonText { get; set; } = string.Empty;
+        public string? VideoLink { get; set; }
         public int? SortIndex { get; set; }
     }
 }

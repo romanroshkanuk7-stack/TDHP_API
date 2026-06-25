@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TDHP_API.TDHPDbContext;
@@ -11,9 +12,11 @@ using TDHP_API.TDHPDbContext;
 namespace TDHP_API.Migrations
 {
     [DbContext(typeof(THDPContext))]
-    partial class THDPContextModelSnapshot : ModelSnapshot
+    [Migration("20260625224017_AddVideoLinkToCourse")]
+    partial class AddVideoLinkToCourse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

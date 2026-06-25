@@ -8,6 +8,7 @@ namespace TDHP_API.DTOs.Course
         public string? DetailImage { get; set; }
         public string? Description { get; set; }
         public string? ButtonText { get; set; }
+        public string? VideoLink { get; set; }
         public int? SortIndex { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace TDHP_API.DTOs.Course
         public string Description { get; set; } = string.Empty;
         public string ButtonText { get; set; } = string.Empty;
         public int SortIndex { get; set; }
+        public string VideoLink { get; set; } = string.Empty;
         public List<ScheduleDto> Schedules { get; set; } = new();
     }
     public class ScheduleDto

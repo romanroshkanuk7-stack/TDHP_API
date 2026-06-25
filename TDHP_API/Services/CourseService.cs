@@ -42,7 +42,8 @@ namespace TDHP_API.Services
                 DetailImage = dto.DetailImage,
                 Description = dto.Description,
                 ButtonText = dto.ButtonText,
-                SortIndex = sortIndex
+                SortIndex = sortIndex,
+                VideoLink = dto.VideoLink ?? string.Empty
             };
             _db.Courses.Add(entity);
             await _db.SaveChangesAsync();
@@ -59,6 +60,7 @@ namespace TDHP_API.Services
             if (dto.DetailImage != null) entity.DetailImage = dto.DetailImage;
             if (dto.Description != null) entity.Description = dto.Description;
             if (dto.ButtonText != null) entity.ButtonText = dto.ButtonText;
+            if (dto.VideoLink != null) entity.VideoLink = dto.VideoLink;
             if (dto.SortIndex.HasValue) entity.SortIndex = dto.SortIndex.Value;
             entity.LastUpdate = DateTime.UtcNow;
             await _db.SaveChangesAsync();
@@ -204,6 +206,7 @@ namespace TDHP_API.Services
             Description = c.Description,
             ButtonText = c.ButtonText,
             SortIndex = c.SortIndex,
+            VideoLink = c.VideoLink,
             Schedules = c.Schedules?.Select(s => new ScheduleDto
             {
                 Id = s.Id,

@@ -19,6 +19,12 @@ namespace TDHP_API.TDHPDbContext.Models
         [Required]
         public string Image { get; set; } = string.Empty;
 
+        public string? Time { get; set; }
+
+        public string? Location { get; set; }
+
+        public string? ButtonLink { get; set; }
+
         [Required]
         public int SortIndex { get; set; } = 0;
 

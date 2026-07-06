@@ -10,20 +10,15 @@ namespace TDHP_API.DTOs.Play
         [Required]
         public string Title { get; set; } = string.Empty;
 
-        [Required]
-        public string Image { get; set; } = string.Empty;
+        public string? Image { get; set; }
 
-        [Required]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
-        [Required]
-        public string CreditsJson { get; set; } = "{}";
+        public string? CreditsJson { get; set; }
 
-        [Required]
-        public string Target { get; set; } = string.Empty;
+        public string? Target { get; set; }
 
-        [Required]
-        public string Duration { get; set; } = string.Empty;
+        public string? Duration { get; set; }
 
         public int? SortIndex { get; set; }
     }

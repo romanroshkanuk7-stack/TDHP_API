@@ -38,6 +38,9 @@ namespace TDHP_API.Services
                 DateLine2 = dto.DateLine2,
                 Title = dto.Title,
                 Image = dto.Image,
+                Time = dto.Time,
+                Location = dto.Location,
+                ButtonLink = dto.ButtonLink,
                 SortIndex = sortIndex
             };
             _db.Programs.Add(entity);
@@ -53,6 +56,9 @@ namespace TDHP_API.Services
             if (dto.DateLine2 != null) entity.DateLine2 = dto.DateLine2;
             if (dto.Title != null) entity.Title = dto.Title;
             if (dto.Image != null) entity.Image = dto.Image;
+            if (dto.Time != null) entity.Time = dto.Time;
+            if (dto.Location != null) entity.Location = dto.Location;
+            if (dto.ButtonLink != null) entity.ButtonLink = dto.ButtonLink;
             if (dto.SortIndex.HasValue) entity.SortIndex = dto.SortIndex.Value;
             entity.LastUpdate = DateTime.UtcNow;
             await _db.SaveChangesAsync();
@@ -94,6 +100,9 @@ namespace TDHP_API.Services
             DateLine2 = p.DateLine2,
             Title = p.Title,
             Image = p.Image,
+            Time = p.Time,
+            Location = p.Location,
+            ButtonLink = p.ButtonLink,
             SortIndex = p.SortIndex
         };
     }

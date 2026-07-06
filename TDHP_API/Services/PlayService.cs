@@ -53,11 +53,11 @@ namespace TDHP_API.Services
             {
                 PerformanceCategoryId = dto.PerformanceCategoryId,
                 Title = dto.Title,
-                Image = dto.Image,
-                Description = dto.Description,
-                CreditsJson = dto.CreditsJson,
-                Target = dto.Target,
-                Duration = dto.Duration,
+                Image = dto.Image ?? string.Empty,
+                Description = dto.Description ?? string.Empty,
+                CreditsJson = dto.CreditsJson ?? "{}",
+                Target = dto.Target ?? string.Empty,
+                Duration = dto.Duration ?? string.Empty,
                 SortIndex = sortIndex
             };
 

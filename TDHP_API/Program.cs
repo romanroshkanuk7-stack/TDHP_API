@@ -123,9 +123,12 @@ namespace TDHP_API
             app.UseAuthorization();
             app.MapControllers();
 
-            // ── Seed Admin User ───────────────────────────────────────
+            // ── Migrate and Seed ───────────────────────────────────────
             using (var scope = app.Services.CreateScope())
             {
+                var db = scope.ServiceProvider.GetRequiredService<THDPContext>();
+                db.Database.Migrate();
+
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                 var adminUser = userManager.FindByEmailAsync("admin@tdhp.cz").GetAwaiter().GetResult();

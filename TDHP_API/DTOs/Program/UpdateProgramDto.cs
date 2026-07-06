@@ -6,6 +6,9 @@ namespace TDHP_API.DTOs.Program
         public string? DateLine2 { get; set; }
         public string? Title { get; set; }
         public string? Image { get; set; }
+        public string? Time { get; set; }
+        public string? Location { get; set; }
+        public string? ButtonLink { get; set; }
         public int? SortIndex { get; set; }
     }
 }

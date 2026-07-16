@@ -15,6 +15,7 @@ namespace TDHP_API.Services
             var list = await _db.Customers
                 .Include(c => c.Courses)
                 .Include(c => c.Workshop)
+                .Include(c => c.Play)
                 .Include(c => c.Address)
                 .ToListAsync();
             return list.Select(c => ToDto(c)).ToList();
@@ -25,6 +26,7 @@ namespace TDHP_API.Services
             var entity = await _db.Customers
                 .Include(c => c.Courses)
                 .Include(c => c.Workshop)
+                .Include(c => c.Play)
                 .Include(c => c.Address)
                 .FirstOrDefaultAsync(c => c.Id == id);
             return entity == null ? null : ToDto(entity);
@@ -57,6 +59,7 @@ namespace TDHP_API.Services
                 Name = dto.Name, SecondName = dto.SecondName, Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber, Birthday = DateTime.SpecifyKind(dto.Birthday, DateTimeKind.Utc),
                 WorkshopId = dto.WorkshopId,
+                PlayId = dto.PlayId,
                 Category = dto.Category, LessonsFrequency = dto.LessonsFrequency, Price = dto.Price
             };
 
@@ -90,7 +93,10 @@ namespace TDHP_API.Services
 
         public async Task<CustomerDto?> UpdateAsync(string id, UpdateCustomerDto dto)
         {
-            var entity = await _db.Customers.Include(c => c.Courses).FirstOrDefaultAsync(c => c.Id == id);
+            var entity = await _db.Customers
+                .Include(c => c.Courses)
+                .Include(c => c.Play)
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (entity == null) return null;
             if (dto.Name != null) entity.Name = dto.Name;
             if (dto.SecondName != null) entity.SecondName = dto.SecondName;
@@ -108,6 +114,7 @@ namespace TDHP_API.Services
             }
 
             if (dto.WorkshopId.HasValue) entity.WorkshopId = dto.WorkshopId;
+            if (dto.PlayId.HasValue) entity.PlayId = dto.PlayId;
             if (dto.Category != null) entity.Category = dto.Category;
             if (dto.LessonsFrequency != null) entity.LessonsFrequency = dto.LessonsFrequency;
             if (dto.Price.HasValue) entity.Price = dto.Price.Value;
@@ -145,6 +152,7 @@ namespace TDHP_API.Services
             CourseIds = c.Courses?.Select(co => co.Id).ToList() ?? new List<Guid>(),
             CourseNames = c.Courses?.Select(co => co.Title).ToList() ?? new List<string>(),
             WorkshopId = c.WorkshopId, WorkshopName = c.Workshop?.Title,
+            PlayId = c.PlayId, PlayName = c.Play?.Title,
             Street = c.Address?.Street ?? string.Empty,
             City = c.Address?.City ?? string.Empty,
             PostalCode = c.Address?.PostalCode,

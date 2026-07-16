@@ -39,6 +39,13 @@ namespace TDHP_API.TDHPDbContext
                 .HasForeignKey(c => c.WorkshopId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            // Customer -> Play (many customers per play)
+            builder.Entity<CustomerEntity>()
+                .HasOne(c => c.Play)
+                .WithMany(p => p.Customers)
+                .HasForeignKey(c => c.PlayId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             // Customer -> Address (one-to-one)
             builder.Entity<CustomerEntity>()
                 .HasOne(c => c.Address)

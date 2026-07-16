@@ -10,6 +10,7 @@ namespace TDHP_API.DTOs.Customer
         public Guid? CourseId { get; set; }
         public List<Guid>? CourseIds { get; set; }
         public Guid? WorkshopId { get; set; }
+        public Guid? PlayId { get; set; }
         public string? Category { get; set; }
         public string? LessonsFrequency { get; set; }
         public int? Price { get; set; }

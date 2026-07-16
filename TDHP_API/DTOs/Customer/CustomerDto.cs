@@ -15,6 +15,8 @@ namespace TDHP_API.DTOs.Customer
         public List<string> CourseNames { get; set; } = new();
         public Guid? WorkshopId { get; set; }
         public string? WorkshopName { get; set; }
+        public Guid? PlayId { get; set; }
+        public string? PlayName { get; set; }
         public string Street { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
         public int? PostalCode { get; set; }

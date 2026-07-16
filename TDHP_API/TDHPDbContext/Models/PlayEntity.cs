@@ -40,5 +40,7 @@ namespace TDHP_API.TDHPDbContext.Models
 
         [Required]
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
+
+        public ICollection<CustomerEntity> Customers { get; set; } = new List<CustomerEntity>();
     }
 }

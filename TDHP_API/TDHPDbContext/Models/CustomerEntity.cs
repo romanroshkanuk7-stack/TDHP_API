@@ -32,6 +32,9 @@ namespace TDHP_API.TDHPDbContext.Models
         public Guid? WorkshopId { get; set; }
         public WorkshopEntity? Workshop { get; set; }
 
+        public Guid? PlayId { get; set; }
+        public PlayEntity? Play { get; set; }
+
         [Required]
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 

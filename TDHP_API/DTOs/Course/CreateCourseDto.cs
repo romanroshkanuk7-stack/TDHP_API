@@ -11,5 +11,9 @@ namespace TDHP_API.DTOs.Course
         [Required] public string ButtonText { get; set; } = string.Empty;
         public string? VideoLink { get; set; }
         public int? SortIndex { get; set; }
+        public int? PriceKids1 { get; set; }
+        public int? PriceKids2 { get; set; }
+        public int? PriceAdults1 { get; set; }
+        public int? PriceAdults2 { get; set; }
     }
 }

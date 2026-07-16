@@ -37,6 +37,18 @@ namespace TDHP_API.TDHPDbContext.Models
         [Required]
         public int SortIndex { get; set; } = 0;
 
+        [Required]
+        public int PriceKids1 { get; set; } = 2700;
+
+        [Required]
+        public int PriceKids2 { get; set; } = 4100;
+
+        [Required]
+        public int PriceAdults1 { get; set; } = 3500;
+
+        [Required]
+        public int PriceAdults2 { get; set; } = 4500;
+
         public ICollection<CourseScheduleEntity> Schedules { get; set; } = new List<CourseScheduleEntity>();
         public ICollection<CustomerEntity> Customers { get; set; } = new List<CustomerEntity>();
     }

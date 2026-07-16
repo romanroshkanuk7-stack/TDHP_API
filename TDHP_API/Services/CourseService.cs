@@ -43,7 +43,11 @@ namespace TDHP_API.Services
                 Description = dto.Description,
                 ButtonText = dto.ButtonText,
                 SortIndex = sortIndex,
-                VideoLink = dto.VideoLink ?? string.Empty
+                VideoLink = dto.VideoLink ?? string.Empty,
+                PriceKids1 = dto.PriceKids1 ?? 2700,
+                PriceKids2 = dto.PriceKids2 ?? 4100,
+                PriceAdults1 = dto.PriceAdults1 ?? 3500,
+                PriceAdults2 = dto.PriceAdults2 ?? 4500
             };
             _db.Courses.Add(entity);
             await _db.SaveChangesAsync();
@@ -62,6 +66,10 @@ namespace TDHP_API.Services
             if (dto.ButtonText != null) entity.ButtonText = dto.ButtonText;
             if (dto.VideoLink != null) entity.VideoLink = dto.VideoLink;
             if (dto.SortIndex.HasValue) entity.SortIndex = dto.SortIndex.Value;
+            if (dto.PriceKids1.HasValue) entity.PriceKids1 = dto.PriceKids1.Value;
+            if (dto.PriceKids2.HasValue) entity.PriceKids2 = dto.PriceKids2.Value;
+            if (dto.PriceAdults1.HasValue) entity.PriceAdults1 = dto.PriceAdults1.Value;
+            if (dto.PriceAdults2.HasValue) entity.PriceAdults2 = dto.PriceAdults2.Value;
             entity.LastUpdate = DateTime.UtcNow;
             await _db.SaveChangesAsync();
             return ToDto(entity);
@@ -207,6 +215,10 @@ namespace TDHP_API.Services
             ButtonText = c.ButtonText,
             SortIndex = c.SortIndex,
             VideoLink = c.VideoLink,
+            PriceKids1 = c.PriceKids1,
+            PriceKids2 = c.PriceKids2,
+            PriceAdults1 = c.PriceAdults1,
+            PriceAdults2 = c.PriceAdults2,
             Schedules = c.Schedules?.Select(s => new ScheduleDto
             {
                 Id = s.Id,

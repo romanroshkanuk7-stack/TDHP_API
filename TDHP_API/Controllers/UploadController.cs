@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace TDHP_API.Controllers
 {
@@ -8,10 +9,12 @@ namespace TDHP_API.Controllers
     public class UploadController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
 
-        public UploadController(IWebHostEnvironment env)
+        public UploadController(IWebHostEnvironment env, IConfiguration configuration)
         {
             _env = env;
+            _configuration = configuration;
         }
 
         [HttpPost, Authorize]
@@ -47,8 +50,17 @@ namespace TDHP_API.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            // Build dynamic URL
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+            // Build dynamic URL using configuration or Request host in development
+            string baseUrl;
+            if (_env.IsDevelopment())
+            {
+                baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+            }
+            else
+            {
+                var frontendUrl = _configuration["FrontendUrl"] ?? "https://www.honzapokusil.cz";
+                baseUrl = frontendUrl.TrimEnd('/');
+            }
             var fileUrl = $"{baseUrl}/uploads/{fileName}";
 
             return Ok(new { url = fileUrl });

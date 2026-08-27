@@ -21,6 +21,7 @@ namespace TDHP_API.TDHPDbContext
         public DbSet<ProgramEntity> Programs { get; set; }
         public DbSet<PerformanceCategoryEntity> PerformanceCategories { get; set; }
         public DbSet<PlayEntity> Plays { get; set; }
+        public DbSet<AnnouncementEntity> Announcements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -80,6 +80,7 @@ namespace TDHP_API
             builder.Services.AddScoped<IProgramService, ProgramService>();
             builder.Services.AddScoped<IPerformanceCategoryService, PerformanceCategoryService>();
             builder.Services.AddScoped<IPlayService, PlayService>();
+            builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
 
             // ── Controllers & Swagger ─────────────────────────────────
             builder.Services.AddControllers();
@@ -151,13 +152,15 @@ namespace TDHP_API
                     }
                 }
 
-                // ── Seed Performance Categories & Plays & Workshops ──────
+                // ── Seed Performance Categories & Plays & Workshops & Announcements ──────
                 var catService = scope.ServiceProvider.GetRequiredService<IPerformanceCategoryService>();
                 var playService = scope.ServiceProvider.GetRequiredService<IPlayService>();
                 var workshopService = scope.ServiceProvider.GetRequiredService<IWorkshopService>();
+                var announcementService = scope.ServiceProvider.GetRequiredService<IAnnouncementService>();
                 catService.SeedDefaultCategoriesAsync().GetAwaiter().GetResult();
                 playService.SeedDefaultPlaysAsync().GetAwaiter().GetResult();
                 workshopService.SeedDefaultWorkshopsAsync().GetAwaiter().GetResult();
+                announcementService.SeedDefaultAnnouncementsAsync().GetAwaiter().GetResult();
             }
 
             app.Run();

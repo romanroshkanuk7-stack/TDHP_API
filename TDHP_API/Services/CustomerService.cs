@@ -59,6 +59,7 @@ namespace TDHP_API.Services
                 Name = dto.Name, SecondName = dto.SecondName, Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber, Birthday = DateTime.SpecifyKind(dto.Birthday, DateTimeKind.Utc),
                 WorkshopId = dto.WorkshopId,
+                WorkshopDate = dto.WorkshopDate,
                 PlayId = dto.PlayId,
                 Category = dto.Category, LessonsFrequency = dto.LessonsFrequency, Price = dto.Price
             };
@@ -114,6 +115,7 @@ namespace TDHP_API.Services
             }
 
             if (dto.WorkshopId.HasValue) entity.WorkshopId = dto.WorkshopId;
+            if (dto.WorkshopDate != null) entity.WorkshopDate = dto.WorkshopDate;
             if (dto.PlayId.HasValue) entity.PlayId = dto.PlayId;
             if (dto.Category != null) entity.Category = dto.Category;
             if (dto.LessonsFrequency != null) entity.LessonsFrequency = dto.LessonsFrequency;
@@ -152,6 +154,7 @@ namespace TDHP_API.Services
             CourseIds = c.Courses?.Select(co => co.Id).ToList() ?? new List<Guid>(),
             CourseNames = c.Courses?.Select(co => co.Title).ToList() ?? new List<string>(),
             WorkshopId = c.WorkshopId, WorkshopName = c.Workshop?.Title,
+            WorkshopDate = c.WorkshopDate,
             PlayId = c.PlayId, PlayName = c.Play?.Title,
             Street = c.Address?.Street ?? string.Empty,
             City = c.Address?.City ?? string.Empty,

@@ -31,6 +31,7 @@ namespace TDHP_API.TDHPDbContext.Models
 
         public Guid? WorkshopId { get; set; }
         public WorkshopEntity? Workshop { get; set; }
+        public string? WorkshopDate { get; set; }
 
         public Guid? PlayId { get; set; }
         public PlayEntity? Play { get; set; }

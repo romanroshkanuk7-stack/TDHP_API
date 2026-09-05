@@ -11,14 +11,29 @@ namespace TDHP_API.Services
         public WorkshopService(THDPContext db) => _db = db;
 
         public async Task<List<WorkshopDto>> GetAllAsync() =>
-            await _db.Workshops.Select(w => ToDto(w)).ToListAsync();
+            await _db.Workshops.Include(w => w.Dates).Select(w => ToDto(w)).ToListAsync();
 
         public async Task<WorkshopDto?> GetByIdAsync(Guid id) =>
-            await _db.Workshops.Where(w => w.Id == id).Select(w => ToDto(w)).FirstOrDefaultAsync();
+            await _db.Workshops.Include(w => w.Dates).Where(w => w.Id == id).Select(w => ToDto(w)).FirstOrDefaultAsync();
 
         public async Task<WorkshopDto> CreateAsync(CreateWorkshopDto dto)
         {
-            var entity = new WorkshopEntity { Title = dto.Title, Image = dto.Image, ToId = dto.ToId, IsPlaceholder = dto.IsPlaceholder, Description = dto.Description };
+            var entity = new WorkshopEntity
+            {
+                Title = dto.Title,
+                Image = dto.Image,
+                ToId = dto.ToId,
+                IsPlaceholder = dto.IsPlaceholder,
+                Description = dto.Description,
+                Price = dto.Price
+            };
+            if (dto.Dates != null && dto.Dates.Any())
+            {
+                foreach (var d in dto.Dates.Where(s => !string.IsNullOrWhiteSpace(s)))
+                {
+                    entity.Dates.Add(new WorkshopDateEntity { DateText = d.Trim() });
+                }
+            }
             _db.Workshops.Add(entity);
             await _db.SaveChangesAsync();
             return ToDto(entity);
@@ -26,13 +41,24 @@ namespace TDHP_API.Services
 
         public async Task<WorkshopDto?> UpdateAsync(Guid id, UpdateWorkshopDto dto)
         {
-            var entity = await _db.Workshops.FindAsync(id);
+            var entity = await _db.Workshops.Include(w => w.Dates).FirstOrDefaultAsync(w => w.Id == id);
             if (entity == null) return null;
             if (dto.Title != null) entity.Title = dto.Title;
             if (dto.Image != null) entity.Image = dto.Image;
             if (dto.ToId != null) entity.ToId = dto.ToId;
             if (dto.IsPlaceholder.HasValue) entity.IsPlaceholder = dto.IsPlaceholder.Value;
             if (dto.Description != null) entity.Description = dto.Description;
+            entity.Price = dto.Price;
+
+            if (dto.Dates != null)
+            {
+                _db.WorkshopDates.RemoveRange(entity.Dates);
+                entity.Dates.Clear();
+                foreach (var d in dto.Dates.Where(s => !string.IsNullOrWhiteSpace(s)))
+                {
+                    entity.Dates.Add(new WorkshopDateEntity { DateText = d.Trim() });
+                }
+            }
             entity.LastUpdate = DateTime.UtcNow;
             await _db.SaveChangesAsync();
             return ToDto(entity);
@@ -47,7 +73,17 @@ namespace TDHP_API.Services
             return true;
         }
 
-        private static WorkshopDto ToDto(WorkshopEntity w) => new() { Id = w.Id, Title = w.Title, Image = w.Image, ToId = w.ToId, IsPlaceholder = w.IsPlaceholder, Description = w.Description };
+        private static WorkshopDto ToDto(WorkshopEntity w) => new()
+        {
+            Id = w.Id,
+            Title = w.Title,
+            Image = w.Image,
+            ToId = w.ToId,
+            IsPlaceholder = w.IsPlaceholder,
+            Description = w.Description,
+            Price = w.Price,
+            Dates = w.Dates?.Select(d => d.DateText).ToList() ?? new()
+        };
 
         public async Task SeedDefaultWorkshopsAsync()
         {

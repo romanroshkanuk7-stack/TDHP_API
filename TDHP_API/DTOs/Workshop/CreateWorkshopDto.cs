@@ -8,5 +8,7 @@ namespace TDHP_API.DTOs.Workshop
         [Required] public string ToId { get; set; } = string.Empty;
         public bool IsPlaceholder { get; set; } = false;
         public string Description { get; set; } = string.Empty;
+        public int? Price { get; set; }
+        public List<string>? Dates { get; set; } = new();
     }
 }

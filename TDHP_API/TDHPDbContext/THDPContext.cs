@@ -15,6 +15,7 @@ namespace TDHP_API.TDHPDbContext
         public DbSet<CustomerEntity> Customers { get; set; }
         public DbSet<CourseEntity> Courses { get; set; }
         public DbSet<WorkshopEntity> Workshops { get; set; }
+        public DbSet<WorkshopDateEntity> WorkshopDates { get; set; }
         public DbSet<CourseScheduleEntity> CourseSchedules { get; set; }
         public DbSet<GroupEntity> Groups { get; set; }
         public DbSet<AddressEntity> Addresses { get; set; }
@@ -39,6 +40,13 @@ namespace TDHP_API.TDHPDbContext
                 .WithMany(w => w.Customers)
                 .HasForeignKey(c => c.WorkshopId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            // Workshop -> Dates
+            builder.Entity<WorkshopDateEntity>()
+                .HasOne(wd => wd.Workshop)
+                .WithMany(w => w.Dates)
+                .HasForeignKey(wd => wd.WorkshopId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Customer -> Play (many customers per play)
             builder.Entity<CustomerEntity>()

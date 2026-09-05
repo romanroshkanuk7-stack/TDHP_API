@@ -27,7 +27,9 @@ namespace TDHP_API.TDHPDbContext.Models
 
         [Required]
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
-        public ICollection<CustomerEntity> Customers { get; set; } = new List<CustomerEntity>();
 
+        public int? Price { get; set; }
+        public ICollection<WorkshopDateEntity> Dates { get; set; } = new List<WorkshopDateEntity>();
+        public ICollection<CustomerEntity> Customers { get; set; } = new List<CustomerEntity>();
     }
 }

@@ -31,7 +31,7 @@ namespace TDHP_API.Services
             {
                 foreach (var d in dto.Dates.Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
-                    entity.Dates.Add(new WorkshopDateEntity { DateText = d.Trim() });
+                    entity.Dates.Add(new WorkshopDateEntity { WorkshopId = entity.Id, DateText = d.Trim() });
                 }
             }
             _db.Workshops.Add(entity);
@@ -55,11 +55,16 @@ namespace TDHP_API.Services
                 if (entity.Dates != null && entity.Dates.Count > 0)
                 {
                     _db.WorkshopDates.RemoveRange(entity.Dates);
+                    entity.Dates.Clear();
                 }
-                entity.Dates = new List<WorkshopDateEntity>();
+                else
+                {
+                    entity.Dates = new List<WorkshopDateEntity>();
+                }
+
                 foreach (var d in dto.Dates.Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
-                    entity.Dates.Add(new WorkshopDateEntity { DateText = d.Trim() });
+                    entity.Dates.Add(new WorkshopDateEntity { WorkshopId = entity.Id, DateText = d.Trim() });
                 }
             }
             entity.LastUpdate = DateTime.UtcNow;

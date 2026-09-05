@@ -10,7 +10,13 @@ namespace TDHP_API.Controllers
     public class WorkshopController : ControllerBase
     {
         private readonly IWorkshopService _service;
-        public WorkshopController(IWorkshopService service) => _service = service;
+        private readonly ILogger<WorkshopController> _logger;
+
+        public WorkshopController(IWorkshopService service, ILogger<WorkshopController> logger)
+        {
+            _service = service;
+            _logger = logger;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAll() => Ok(await _service.GetAllAsync());
@@ -26,22 +32,46 @@ namespace TDHP_API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateWorkshopDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var created = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            try
+            {
+                var created = await _service.CreateAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating workshop");
+                return StatusCode(500, new { message = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpPut("{id:guid}"), Authorize]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateWorkshopDto dto)
         {
-            var updated = await _service.UpdateAsync(id, dto);
-            return updated == null ? NotFound() : Ok(updated);
+            try
+            {
+                var updated = await _service.UpdateAsync(id, dto);
+                return updated == null ? NotFound() : Ok(updated);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating workshop {Id}", id);
+                return StatusCode(500, new { message = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
 
         [HttpDelete("{id:guid}"), Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var deleted = await _service.DeleteAsync(id);
-            return deleted ? NoContent() : NotFound();
+            try
+            {
+                var deleted = await _service.DeleteAsync(id);
+                return deleted ? NoContent() : NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting workshop {Id}", id);
+                return StatusCode(500, new { message = ex.Message, inner = ex.InnerException?.Message });
+            }
         }
     }
 }

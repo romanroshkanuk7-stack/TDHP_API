@@ -52,8 +52,11 @@ namespace TDHP_API.Services
 
             if (dto.Dates != null)
             {
-                _db.WorkshopDates.RemoveRange(entity.Dates);
-                entity.Dates.Clear();
+                if (entity.Dates != null && entity.Dates.Count > 0)
+                {
+                    _db.WorkshopDates.RemoveRange(entity.Dates);
+                }
+                entity.Dates = new List<WorkshopDateEntity>();
                 foreach (var d in dto.Dates.Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
                     entity.Dates.Add(new WorkshopDateEntity { DateText = d.Trim() });

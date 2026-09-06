@@ -31,7 +31,7 @@ namespace TDHP_API.Services
             {
                 foreach (var d in dto.Dates.Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
-                    entity.Dates.Add(new WorkshopDateEntity { WorkshopId = entity.Id, DateText = d.Trim() });
+                    entity.Dates.Add(new WorkshopDateEntity { Id = Guid.NewGuid(), WorkshopId = entity.Id, DateText = d.Trim() });
                 }
             }
             _db.Workshops.Add(entity);
@@ -52,24 +52,27 @@ namespace TDHP_API.Services
 
             if (dto.Dates != null)
             {
-                if (entity.Dates != null && entity.Dates.Count > 0)
+                var existingDates = await _db.WorkshopDates.Where(d => d.WorkshopId == id).ToListAsync();
+                if (existingDates.Any())
                 {
-                    _db.WorkshopDates.RemoveRange(entity.Dates);
-                    entity.Dates.Clear();
-                }
-                else
-                {
-                    entity.Dates = new List<WorkshopDateEntity>();
+                    _db.WorkshopDates.RemoveRange(existingDates);
                 }
 
                 foreach (var d in dto.Dates.Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
-                    entity.Dates.Add(new WorkshopDateEntity { WorkshopId = entity.Id, DateText = d.Trim() });
+                    _db.WorkshopDates.Add(new WorkshopDateEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        WorkshopId = entity.Id,
+                        DateText = d.Trim()
+                    });
                 }
             }
             entity.LastUpdate = DateTime.UtcNow;
             await _db.SaveChangesAsync();
-            return ToDto(entity);
+
+            var freshEntity = await _db.Workshops.Include(w => w.Dates).FirstOrDefaultAsync(w => w.Id == id);
+            return ToDto(freshEntity ?? entity);
         }
 
         public async Task<bool> DeleteAsync(Guid id)

@@ -18,6 +18,7 @@ namespace TDHP_API.Services
 
         public async Task<WorkshopDto> CreateAsync(CreateWorkshopDto dto)
         {
+
             var entity = new WorkshopEntity
             {
                 Title = dto.Title,

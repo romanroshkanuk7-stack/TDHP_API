@@ -10,5 +10,6 @@ namespace TDHP_API.DTOs.Workshop
         public string Description { get; set; } = string.Empty;
         public int? Price { get; set; }
         public List<string> Dates { get; set; } = new();
+        public List<WorkshopDateItemDto> DateItems { get; set; } = new();
     }
 }

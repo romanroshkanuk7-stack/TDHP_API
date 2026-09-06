@@ -18,7 +18,6 @@ namespace TDHP_API.Services
 
         public async Task<WorkshopDto> CreateAsync(CreateWorkshopDto dto)
         {
-
             var entity = new WorkshopEntity
             {
                 Title = dto.Title,
@@ -28,11 +27,29 @@ namespace TDHP_API.Services
                 Description = dto.Description,
                 Price = dto.Price
             };
-            if (dto.Dates != null && dto.Dates.Any())
+            if (dto.DateItems != null && dto.DateItems.Any())
+            {
+                foreach (var item in dto.DateItems.Where(i => !string.IsNullOrWhiteSpace(i.DateText)))
+                {
+                    entity.Dates.Add(new WorkshopDateEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        WorkshopId = entity.Id,
+                        DateText = item.DateText.Trim(),
+                        Price = item.Price
+                    });
+                }
+            }
+            else if (dto.Dates != null && dto.Dates.Any())
             {
                 foreach (var d in dto.Dates.Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
-                    entity.Dates.Add(new WorkshopDateEntity { Id = Guid.NewGuid(), WorkshopId = entity.Id, DateText = d.Trim() });
+                    entity.Dates.Add(new WorkshopDateEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        WorkshopId = entity.Id,
+                        DateText = d.Trim()
+                    });
                 }
             }
             _db.Workshops.Add(entity);
@@ -51,7 +68,26 @@ namespace TDHP_API.Services
             if (dto.Description != null) entity.Description = dto.Description;
             entity.Price = dto.Price;
 
-            if (dto.Dates != null)
+            if (dto.DateItems != null)
+            {
+                var existingDates = await _db.WorkshopDates.Where(d => d.WorkshopId == id).ToListAsync();
+                if (existingDates.Any())
+                {
+                    _db.WorkshopDates.RemoveRange(existingDates);
+                }
+
+                foreach (var item in dto.DateItems.Where(i => !string.IsNullOrWhiteSpace(i.DateText)))
+                {
+                    _db.WorkshopDates.Add(new WorkshopDateEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        WorkshopId = entity.Id,
+                        DateText = item.DateText.Trim(),
+                        Price = item.Price
+                    });
+                }
+            }
+            else if (dto.Dates != null)
             {
                 var existingDates = await _db.WorkshopDates.Where(d => d.WorkshopId == id).ToListAsync();
                 if (existingDates.Any())
@@ -94,7 +130,13 @@ namespace TDHP_API.Services
             IsPlaceholder = w.IsPlaceholder,
             Description = w.Description,
             Price = w.Price,
-            Dates = w.Dates?.Select(d => d.DateText).ToList() ?? new()
+            Dates = w.Dates?.Select(d => d.DateText).ToList() ?? new(),
+            DateItems = w.Dates?.Select(d => new WorkshopDateItemDto
+            {
+                Id = d.Id,
+                DateText = d.DateText,
+                Price = d.Price
+            }).ToList() ?? new()
         };
 
         public async Task SeedDefaultWorkshopsAsync()

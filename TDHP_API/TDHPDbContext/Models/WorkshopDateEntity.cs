@@ -16,5 +16,7 @@ namespace TDHP_API.TDHPDbContext.Models
 
         [Required]
         public string DateText { get; set; } = string.Empty;
+
+        public int? Price { get; set; }
     }
 }

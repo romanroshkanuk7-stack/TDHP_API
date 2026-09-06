@@ -10,5 +10,6 @@ namespace TDHP_API.DTOs.Workshop
         public int? Price { get; set; }
         public List<string>? Dates { get; set; }
         public List<WorkshopDateItemDto>? DateItems { get; set; }
+
     }
 }

@@ -16,6 +16,7 @@ namespace TDHP_API.Services
         public async Task<WorkshopDto?> GetByIdAsync(Guid id) =>
             await _db.Workshops.Include(w => w.Dates).Where(w => w.Id == id).Select(w => ToDto(w)).FirstOrDefaultAsync();
 
+
         public async Task<WorkshopDto> CreateAsync(CreateWorkshopDto dto)
         {
             var entity = new WorkshopEntity
